@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./mascara.js"></script>
+    <script src="./cadastrar.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/#style.css" media="screen" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sono:wght@200;300;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+        body {
+            background-image: url(https://i.imgur.com/4eaC8pO.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 75px;
+        }
+
+        .card {
+            background-color: #ffffff75;
+            padding: 30px;
+            border-radius: 4%;
+            box-shadow: 3px 3px 1px 0px #00000075;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #323035;
+        }
+
+        .label_float input {
+            width: 100%;
+            padding: 5px 5px;
+            display: inline-block;
+            border: 0;
+            border-bottom: 1px solid #323035;
+            background-color: transparent;
+            outline: none;
+            min-width: 180px;
+            font-size: 16px;
+            transition: all .3s ease-out;
+            border-radius: 0;
+        }
+
+        .label_float {
+            position: relative;
+            padding-top: 13px;
+            margin-top: 5%;
+            margin-bottom: 5%;
+        }
+
+        .label_float input:focus {
+            border-bottom: 2px solid #F0E9DF;
+        }
+
+        .label_float label {
+            color: #323035;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: 13px;
+            transition: all .3s ease-out;
+        }
+
+        .label_float input:focus+label {
+            font-size: 13px;
+            margin-top: 0;
+            color: #F0E9DF;
+        }
+
+        button {
+            background-color: transparent;
+            border-color: #323035;
+            color: #323035;
+            padding: 7px;
+            font-weight: bold;
+            font-size: 12pt;
+            margin-top: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            transition: all .5s ease-out;
+        }
+
+        button:hover {
+            background-color: #323035;
+            color: white;
+        }
+
+        .justify-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        hr {
+            margin-top: 10%;
+            margin-bottom: 10%;
+            width: 100%;
+
+        }
+
+        .container h1:focus {
+            color: white;
+        }
+
+        .label_float input:focus+label,
+        .label_float input:valid+label {
+            font-size: 13px;
+            margin-top: 0;
+            color: #323035;
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/add-form" method="POST">
+        <div class="container">
+            <div class="card">
+
+                <div class="justify-center">
+                    <h1>Cadastrar</h1>
+                </div>
+                <div class="label_float">
+                    <input type="text" name="nome" id="nome" placeholder="" autocomplete="off" required>
+                    <label for="nome">Nome</label>
+                </div>
+
+                <div class="label_float">
+                    <input type="text" name="cpf" id="cpf" placeholder="" minlength="14" maxlength="14"
+                        onkeyup="mascara_cpf()" autocomplete="off" required>
+                    <label for="cpf">Cpf</label>
+                </div>
+
+                <div class="label_float">
+                    <input type="email" name="email" id="email" autocomplete="off" required>
+                    <label for="email">E-mail</label>
+                </div>
+
+                <div class="label_float">
+                    <input type="tel" name="telefone" id="telefone" autocomplete="off" minlength="15" maxlength="15"
+                        onkeyup="handlePhone(event)" required>
+                    <label for="telefone">Telefone</label>
+                </div>
+
+                <div class="label_float">
+                    <input type="date" name="data" id="data" required>
+                    <label for="data"></label>
+                </div>
+
+
+                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="masculino" id="genero"> Masculino
+                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="feminino" id="genero"> Feminino
+                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="outros" id="genero"> Outros
+    </form>
+
+
+
+    <div class="justify-center">
+
+        <div>
+            <button onclick="cadastrar()">Entrar</button>
+        </div>
+
+    </div>
+    <hr>
+
+    </div>
+
+    </div>
+</body>
+<script>
+    function mascara_cpf() {
+        var CPF = document.getElementById("cpf")
+        if (CPF.value.length == 3 || CPF.value.length == 7) {
+            CPF.value += '.'
+        } else if (CPF.value.length == 11) {
+            CPF.value += '-'
+        }
+    }
+    const handlePhone = (event) => {
+        let input = event.target
+        input.value = phoneMask(input.value)
+    }
+
+    const phoneMask = (value) => {
+        if (!value) return ""
+        value = value.replace(/\D/g, '')
+        value = value.replace(/(\d{2})(\d)/, "($1) $2")
+        value = value.replace(/(\d)(\d{4})$/, "$1-$2")
+        return value
+    }
+
+    function mascara_data() {
+        var DATA = document.getElementById("data")
+        if (DATA.value.length == 2 || DATA.value.length == 5) {
+            DATA.value += '/'
+        }
+    }
+    function cadastrar() {
+        var verifica = document.getElementById('data', 'telefone', 'cpf', 'email', 'nome').value
+        var cpf = document.getElementById('cpf').value
+        var telefone = document.getElementById('telefone').value
+
+        if (verifica == '') {
+            alert('Error')
+        } else { }
+    }
+
+</script>
+
+</html>
